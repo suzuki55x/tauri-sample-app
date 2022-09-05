@@ -9,12 +9,15 @@
     <SigPlot id="plot3">
       <PipeLayer :pipe-data="random" :options="{type: 2000, subsize: 1000 }"/>
     </SigPlot>
-    <SigPlot id="plot4" :plot-options="plotOptions">
-      <ArrayLayer :plot-data="random2" :options="dataHeader" :layerOptions="layerOptions"/>
+    <SigPlot id="plot5" :plot-options="plotOptions">
+      <ArrayLayer :plot-data="plotdata" :options="dataHeader" :layerOptions="layerOptions"/>
+    </SigPlot>
+    <SigPlot id="plot4" :plot-options="plotOptions2">
+      <ArrayLayer :plot-data="random2" :options="dataHeader2" :layerOptions="layerOptions2"/>
     </SigPlot>
     <button id="toggler" @click="btnToggle = !btnToggle">Toggle Data</button>
-    {{btnToggle}}
-    {{random}}
+    <button id="toggler" @click="read_file">READ</button>
+    {{plotdata}}
   </div>
 </template>
 
@@ -23,6 +26,10 @@ import SigPlot from "./SigPlot.vue";
 import ArrayLayer from "./ArrayLayer.vue";
 import HrefLayer from "./HrefLayer.vue";
 import PipeLayer from "./PipeLayer.vue";
+
+import { invoke } from "@tauri-apps/api/tauri";
+import { dialog} from "@tauri-apps/api";
+
 export default {
   name: "App",
   components: {
@@ -44,9 +51,17 @@ export default {
       random: [],
       random2: [],
       random2D: [],
+      plotdata: [0,0],
       test: [1,2,2,1,4,4,2,3,1,1, 0.1, 2],
       generateDataInterval: 0,
       plotOptions: {
+        cmode: 5,
+        ymin: -1000,
+        ymax: 1000,
+        xmin: -1000,
+        xmax: 1000
+      },
+      plotOptions2: {
         cmode: 5,
         ymin: -2,
         ymax: 2,
@@ -57,8 +72,20 @@ export default {
         xunits: "Q",
         yunits: "I"
       },
+      dataHeader2: {
+        xunits: "Q",
+        yunits: "I"
+      },
       layerOptions: {
         name: "IQ data",
+        mode: "XY",
+        framesize: 512,
+        line: 0,
+        radius: 1,
+        symbol: 3
+      },
+      layerOptions2: {
+        name: "IQ data2",
         mode: "XY",
         framesize: 512,
         line: 0,
@@ -92,6 +119,10 @@ export default {
         this.random2D = random2D;
         this.random2 = random2;
       }, 16);
+    },
+    async read_file() {
+      let filepath = await dialog.open()
+      this.plotdata = await invoke("read_file_command", {path: filepath})
     }
   }
 };
@@ -107,6 +138,7 @@ export default {
 #plot1,
 #plot2,
 #plot4,
+#plot5,
 #plot3 {
   display: inline-block;
   height: 400px;
