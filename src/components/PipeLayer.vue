@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "ArrayLayer",
+  name: "PipeLayer",
   props: {
     pipeData: {
       type: Array,

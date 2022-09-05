@@ -9,10 +9,12 @@
     <SigPlot id="plot3">
       <PipeLayer :pipe-data="random" :options="{type: 2000, subsize: 1000 }"/>
     </SigPlot>
-    <SigPlot id="plot4" :plot-options="{/*cmode: 5,*/ ymin:-2, ymax:2, /*xmin:-2, xmax:2, */xstart:-2, xdelta:0.01}">
-      <PipeLayer :pipe-data="random2" :options="{type: 1000}" :layerOptions="{framesize: 512, line: 0, radius: 1, symbol: 1}"/>
+    <SigPlot id="plot4" :plot-options="plotOptions">
+      <ArrayLayer :plot-data="random2" :options="dataHeader" :layerOptions="layerOptions"/>
     </SigPlot>
     <button id="toggler" @click="btnToggle = !btnToggle">Toggle Data</button>
+    {{btnToggle}}
+    {{random}}
   </div>
 </template>
 
@@ -42,7 +44,27 @@ export default {
       random: [],
       random2: [],
       random2D: [],
+      test: [1,2,2,1,4,4,2,3,1,1, 0.1, 2],
       generateDataInterval: 0,
+      plotOptions: {
+        cmode: 5,
+        ymin: -2,
+        ymax: 2,
+        xmin: -2,
+        xmax: 2
+      },
+      dataHeader: {
+        xunits: "Q",
+        yunits: "I"
+      },
+      layerOptions: {
+        name: "IQ data",
+        mode: "XY",
+        framesize: 512,
+        line: 0,
+        radius: 1,
+        symbol: 3
+      },
     }
   },
   beforeDestroy() {
