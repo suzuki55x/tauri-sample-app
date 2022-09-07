@@ -23,10 +23,11 @@ fn read_file_command(path: String) -> Result<Vec<i32>, ()>{
   let mut reader = csv::Reader::from_reader(content.as_bytes());
   let mut plotdata: Vec<i32> = vec![];
   for record in reader.records() {
-      let record = record.unwrap();
-      //println!("{}:::{}", &record[0], &record[1]);
-      plotdata.push(record[0].trim().parse().unwrap());
-      plotdata.push(record[1].trim().parse().unwrap());
+    // TODO: Error routine
+    let record = record.unwrap();
+    //println!("{}:::{}", &record[0], &record[1]);
+    plotdata.push(record[0].trim().parse().unwrap());
+    plotdata.push(record[1].trim().parse().unwrap());
   }
 
   println!("{:?}",plotdata);
