@@ -17,7 +17,7 @@ fn read_file_command(path: String) -> Result<Vec<i32>, ()>{
   let filepath = std::path::Path::new(&path);
   let content = match std::fs::read_to_string(filepath){
     Ok(content) => content,
-    Err(e) => return Err(()),
+    Err(_e) => return Err(()),
   };
 
   let mut reader = csv::Reader::from_reader(content.as_bytes());
